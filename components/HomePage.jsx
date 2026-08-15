@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BackgroundFX from "@/components/BackgroundFX";
 import QuickActions from "@/components/QuickActions";
 import { menu, menuNav } from "@/lib/menu";
@@ -12,8 +12,21 @@ export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("soups");
   const [menuOpen, setMenuOpen] = useState(false);
+  const chromeRef = useRef(null);
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const chrome = chromeRef.current;
+    if (!chrome) return undefined;
+    const syncHeight = () => {
+      document.documentElement.style.setProperty("--chrome-h", `${chrome.offsetHeight}px`);
+    };
+    syncHeight();
+    const observer = new ResizeObserver(syncHeight);
+    observer.observe(chrome);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -67,7 +80,10 @@ export default function HomePage() {
         Skip to menu
       </a>
 
-      <div className={`chrome${scrolled ? " is-scrolled" : ""}${menuOpen ? " is-menu-open" : ""}`}>
+      <div
+        ref={chromeRef}
+        className={`chrome${scrolled ? " is-scrolled" : ""}${menuOpen ? " is-menu-open" : ""}`}
+      >
         <header className="topbar">
           <a className="brand" href="#top" onClick={closeMenu}>
             <Image src="/logo.png" alt="" width={42} height={42} />
