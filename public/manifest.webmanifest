@@ -1,14 +1,14 @@
 {
   "name": "Yajur Fire Bowl",
-  "short_name": "Fire Bowl",
-  "description": "Chinese, Tandoor and Momos — view the menu, hours and contact details.",
+  "short_name": "Yajur Fire Bowl",
+  "description": "Chinese, Tandoor and Momos — view the menu, hours, address and contact details.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0c0a08",
   "theme_color": "#0c0a08",
   "icons": [
     {
-      "src": "assets/logo.png",
+      "src": "/logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
