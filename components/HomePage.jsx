@@ -16,6 +16,21 @@ export default function HomePage() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const reloadHome = (event) => {
+    event.preventDefault();
+    closeMenu();
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+    const home = `${window.location.origin}/`;
+    if (window.location.pathname === "/" && !window.location.hash && !window.location.search) {
+      window.location.reload();
+      return;
+    }
+    window.location.assign(home);
+  };
+
   useEffect(() => {
     const chrome = chromeRef.current;
     if (!chrome) return undefined;
@@ -85,7 +100,7 @@ export default function HomePage() {
         className={`chrome${scrolled ? " is-scrolled" : ""}${menuOpen ? " is-menu-open" : ""}`}
       >
         <header className="topbar">
-          <a className="brand" href="#top" onClick={closeMenu}>
+          <a className="brand" href="/" onClick={reloadHome}>
             <Image src="/logo.png" alt="" width={42} height={42} />
             <span>
               <strong>Yajur</strong>
