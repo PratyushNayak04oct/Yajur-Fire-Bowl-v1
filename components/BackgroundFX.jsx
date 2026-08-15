@@ -2,18 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
-type Spark = {
-  x: number;
-  y: number;
-  r: number;
-  vy: number;
-  vx: number;
-  a: number;
-  hue: number;
-};
-
 export default function BackgroundFX() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,11 +14,11 @@ export default function BackgroundFX() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let sparks: Spark[] = [];
+    let sparks = [];
     let raf = 0;
     let running = true;
 
-    const spawn = (fromBottom = Math.random() > 0.3): Spark => ({
+    const spawn = (fromBottom = Math.random() > 0.3) => ({
       x: Math.random() * window.innerWidth,
       y: fromBottom ? window.innerHeight + Math.random() * 90 : Math.random() * window.innerHeight,
       r: Math.random() * 1.7 + 0.35,

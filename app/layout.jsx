@@ -1,4 +1,3 @@
-import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Outfit } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -11,7 +10,7 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   metadataBase: new URL("https://yajur-fire-bowl.vercel.app"),
   title: site.name,
   description: `${site.name} — ${site.tagline.join(", ")}. View our menu, hours, address and contact details.`,
@@ -26,14 +25,14 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
 };
 
-export const viewport: Viewport = {
+export const viewport = {
   themeColor: "#0c0a08",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${outfit.variable} ${cinzel.variable} ${cormorant.variable}`}>
       <body>

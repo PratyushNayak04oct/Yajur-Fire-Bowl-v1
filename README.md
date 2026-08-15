@@ -25,4 +25,4 @@ Menu and shop details are already available as JSON:
 - `GET /api/menu`
 - `GET /api/site`
 
-Update the shop address in `lib/site.ts`.
+Update the shop address in `lib/site.js`.

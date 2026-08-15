@@ -4,13 +4,11 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import BackgroundFX from "@/components/BackgroundFX";
 import QuickActions from "@/components/QuickActions";
-import { menu, menuNav, type Diet, type Dish, type MenuSection } from "@/lib/menu";
+import { menu, menuNav } from "@/lib/menu";
 import { mapsUrl, site } from "@/lib/site";
 
-type DietFilter = "all" | Diet;
-
 export default function HomePage() {
-  const [diet, setDiet] = useState<DietFilter>("all");
+  const [diet, setDiet] = useState("all");
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("soups");
 
@@ -22,7 +20,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const nodes = [...document.querySelectorAll<HTMLElement>("[data-section]")];
+    const nodes = [...document.querySelectorAll("[data-section]")];
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -53,7 +51,7 @@ export default function HomePage() {
             </span>
           </a>
           <div className="diet" role="group" aria-label="Filter menu by diet">
-            {(["all", "veg", "nv"] as const).map((value) => (
+            {["all", "veg", "nv"].map((value) => (
               <button
                 key={value}
                 className={`diet-btn${diet === value ? " is-active" : ""}`}
@@ -91,7 +89,9 @@ export default function HomePage() {
         <p>
           {site.name} · {site.tagline.join(" | ")}
         </p>
-        <p>© {new Date().getFullYear()} {site.name}</p>
+        <p>
+          © {new Date().getFullYear()} {site.name}
+        </p>
       </footer>
 
       <QuickActions />
@@ -143,7 +143,7 @@ function Hero() {
   );
 }
 
-function MenuBoard({ diet }: { diet: DietFilter }) {
+function MenuBoard({ diet }) {
   return (
     <section className="menu" id="menu">
       <header className="menu-intro">
@@ -158,7 +158,7 @@ function MenuBoard({ diet }: { diet: DietFilter }) {
   );
 }
 
-function SectionCard({ section, diet }: { section: MenuSection; diet: DietFilter }) {
+function SectionCard({ section, diet }) {
   const items = useMemo(
     () => section.items.filter((item) => diet === "all" || item.diet === diet),
     [section.items, diet]
@@ -205,7 +205,7 @@ function SectionCard({ section, diet }: { section: MenuSection; diet: DietFilter
   );
 }
 
-function DishRow({ item, split }: { item: Dish; split?: boolean }) {
+function DishRow({ item, split }) {
   return (
     <li className={`dish${item.special ? " special" : ""}${split ? " split" : ""}`}>
       <i className={`mark ${item.diet}`} />
@@ -226,7 +226,7 @@ function DishRow({ item, split }: { item: Dish; split?: boolean }) {
   );
 }
 
-function MomoRow({ item }: { item: Dish }) {
+function MomoRow({ item }) {
   const prices = item.momo;
   if (!prices) return null;
   return (
