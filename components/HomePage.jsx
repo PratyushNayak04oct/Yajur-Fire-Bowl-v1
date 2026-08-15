@@ -11,12 +11,38 @@ export default function HomePage() {
   const [diet, setDiet] = useState("all");
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("soups");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("nav-open", menuOpen);
+    return () => document.body.classList.remove("nav-open");
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 900px)");
+    const onChange = () => {
+      if (media.matches) setMenuOpen(false);
+    };
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
   }, []);
 
   useEffect(() => {
@@ -41,15 +67,27 @@ export default function HomePage() {
         Skip to menu
       </a>
 
-      <div className={`chrome${scrolled ? " is-scrolled" : ""}`}>
+      <div className={`chrome${scrolled ? " is-scrolled" : ""}${menuOpen ? " is-menu-open" : ""}`}>
         <header className="topbar">
-          <a className="brand" href="#top">
+          <a className="brand" href="#top" onClick={closeMenu}>
             <Image src="/logo.png" alt="" width={42} height={42} />
             <span>
               <strong>Yajur</strong>
               Fire Bowl
             </span>
           </a>
+          <button
+            className={`menu-toggle${menuOpen ? " is-open" : ""}`}
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="site-sidebar"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
           <div className="diet" role="group" aria-label="Filter menu by diet">
             {["all", "veg", "nv"].map((value) => (
               <button
@@ -77,6 +115,30 @@ export default function HomePage() {
             </a>
           ))}
         </nav>
+      </div>
+
+      <div className={`nav-layer${menuOpen ? " is-open" : ""}`}>
+        <button className="nav-scrim" type="button" aria-label="Close menu" onClick={closeMenu} />
+        <aside
+          className="sidebar"
+          id="site-sidebar"
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
+        >
+          <p className="sidebar-kicker">Navigate</p>
+          <nav className="sidebar-nav" aria-label="Menu sections">
+            {menuNav.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={active === item.id ? "is-active" : undefined}
+                onClick={closeMenu}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </aside>
       </div>
 
       <main>
