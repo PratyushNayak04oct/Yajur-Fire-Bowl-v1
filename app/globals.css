@@ -730,49 +730,72 @@ main,
   grid-template-columns: auto;
 }
 
-.split-head,
-.momo-head {
+.split-head {
   display: none;
 }
 
-.momos {
+.momo-head,
+.momo {
   display: grid;
+  grid-template-columns: minmax(5.6rem, 1.35fr) repeat(4, minmax(2.5rem, 1fr));
+  column-gap: 0.3rem;
+  align-items: center;
+  padding-inline: 0.75rem;
+}
+
+.momo-head {
+  padding-top: 0.55rem;
+  padding-bottom: 0.4rem;
+  color: var(--muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 1px solid rgba(201, 162, 74, 0.18);
+}
+
+.momo-head span:first-child {
+  text-align: left;
+  justify-self: start;
+}
+
+.momos {
+  display: block;
 }
 
 .momo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  padding: 0.78rem 0.9rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
   border-bottom: 1px solid rgba(201, 162, 74, 0.1);
 }
 
 .momo .name {
   display: flex;
   gap: 0.4rem;
-  grid-column: 1 / -1;
+  grid-column: 1;
   align-items: center;
+  justify-self: start;
+  line-height: 1.2;
 }
 
 .momo span:not(.name) {
-  display: inline-flex;
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  background: #1b1712;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.42rem 0.55rem;
-  font-size: 0.84rem;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: clamp(0.78rem, 3.2vw, 1rem);
   color: var(--gold-2);
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .momo span:not(.name)::before {
-  color: var(--muted);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  content: attr(data-label);
+  display: none;
 }
 
 .momo span.na {
@@ -1003,25 +1026,22 @@ main,
     grid-template-columns: 1fr 1fr;
   }
 
+  .momo-head,
   .momo {
-    grid-template-columns: minmax(10rem, 1.4fr) repeat(4, 1fr);
-    align-items: center;
+    grid-template-columns: minmax(9.5rem, 1.4fr) repeat(4, minmax(3.2rem, 1fr));
+    column-gap: 0.45rem;
+    padding-inline: 1rem;
+  }
+
+  .momo-head {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
   }
 
   .momo span:not(.name) {
-    display: block;
-    text-align: center;
-    background: transparent;
-    border: 0;
-    padding: 0;
     font-size: 1rem;
   }
 
-  .momo span:not(.name)::before {
-    display: none;
-  }
-
-  .momo-head,
   .split-head {
     display: grid;
     padding: 0.5rem 1rem 0;
@@ -1029,23 +1049,15 @@ main,
     font-size: 0.7rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-  }
-
-  .momo-head {
-    grid-template-columns: minmax(10rem, 1.4fr) repeat(4, 1fr);
-    text-align: center;
-  }
-
-  .momo-head span:first-child,
-  .split-head span:first-child {
-    text-align: left;
-  }
-
-  .split-head {
     grid-template-columns: 1fr 3.6rem 3.6rem;
     justify-items: end;
     gap: 0.35rem;
     padding-right: 1rem;
+  }
+
+  .split-head span:first-child {
+    justify-self: start;
+    text-align: left;
   }
 
   .pair b::before {
