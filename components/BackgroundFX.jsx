@@ -18,18 +18,28 @@ export default function BackgroundFX() {
 
     const paint = () => {
       const y = window.scrollY;
+      const mid = window.innerHeight * 0.5;
       root.style.setProperty("--sy", `${y}`);
       root.style.setProperty("--mx", `${mouseX}`);
       root.style.setProperty("--my", `${mouseY}`);
       if (slowRef.current) {
-        slowRef.current.style.transform = `translate3d(${mouseX * -10}px, ${y * 0.05 + mouseY * -8}px, 0)`;
+        slowRef.current.style.transform = `translate3d(${mouseX * -8}px, ${y * 0.06 + mouseY * -6}px, 0)`;
       }
       if (midRef.current) {
-        midRef.current.style.transform = `translate3d(${mouseX * 14}px, ${y * 0.1 + mouseY * 10}px, 0)`;
+        midRef.current.style.transform = `translate3d(${mouseX * 10}px, ${y * 0.12 + mouseY * 8}px, 0)`;
       }
       if (foodRef.current) {
-        foodRef.current.style.transform = `translate3d(${mouseX * -18}px, ${y * 0.16 + mouseY * -12}px, 0)`;
+        foodRef.current.style.transform = `translate3d(${mouseX * -12}px, ${y * 0.18 + mouseY * -10}px, 0)`;
       }
+      document.querySelectorAll("[data-parallax]").forEach((node) => {
+        const speed = Number(node.dataset.parallax) || 0.12;
+        const current = parseFloat(node.style.getPropertyValue("--py")) || 0;
+        const rect = node.getBoundingClientRect();
+        const center = rect.top - current + rect.height * 0.5;
+        const dist = (center - mid) / window.innerHeight;
+        const shift = Math.max(-24, Math.min(24, dist * 64 * speed));
+        node.style.setProperty("--py", `${shift.toFixed(2)}px`);
+      });
       frame = 0;
     };
 
@@ -47,9 +57,11 @@ export default function BackgroundFX() {
     paint();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(frame);
     };
   }, []);
@@ -133,8 +145,10 @@ export default function BackgroundFX() {
     <div className="fx" aria-hidden="true">
       <div className="fx-par slow" ref={slowRef}>
         <div className="fx-heat" />
+        <div className="fx-orb fx-orb-a" />
       </div>
       <div className="fx-par mid" ref={midRef}>
+        <div className="fx-orb fx-orb-b" />
         <span className="bg-steam one" />
         <span className="bg-steam two" />
         <span className="bg-steam three" />

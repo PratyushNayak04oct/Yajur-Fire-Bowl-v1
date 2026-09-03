@@ -214,7 +214,7 @@ function Hero() {
         <span className="corner tr" />
         <span className="corner bl" />
         <span className="corner br" />
-        <div className="hero-shift">
+        <div className="hero-shift" data-parallax="0.42">
           <Image
             className="hero-logo"
             src="/logo.png"
@@ -256,7 +256,7 @@ function Hero() {
 function MenuBoard() {
   return (
     <section className="menu" id="menu">
-      <header className="menu-intro">
+      <header className="menu-intro" data-parallax="0.22">
         <p className="eyebrow">Our Menu</p>
         <h2>Flame, spice &amp; flavour</h2>
         <p>Filter veg or non-veg inside each section. Prices in INR.</p>
@@ -276,7 +276,7 @@ function SectionCard({ section }) {
   );
 
   return (
-    <article className="card" id={section.id} data-section>
+    <article className="card" id={section.id} data-section data-parallax="0.14">
       <h3 className="card-title">
         {section.title}
         <span className="diet-pair">
@@ -377,7 +377,7 @@ function MomoRow({ item }) {
 function Visit() {
   return (
     <section className="visit" id="visit">
-      <div className="visit-card" id="address" data-section>
+      <div className="visit-card" id="address" data-section data-parallax="0.1">
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />

@@ -586,8 +586,10 @@ main {
   animation: glow 3.6s ease-in-out infinite;
 }
 
-.hero-shift {
-  transform: none;
+.hero-shift,
+.menu-intro {
+  transform: translate3d(0, var(--py, 0px), 0);
+  will-change: transform;
 }
 
 .sr-only {
@@ -1115,18 +1117,26 @@ main {
 }
 
 .card,
-.visit-card,
-.hero-frame {
+.visit-card {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
+  transform: translate3d(0, var(--py, 0px), 0);
+  transition: opacity 0.55s ease;
 }
 
 .card.is-in,
-.visit-card.is-in,
+.visit-card.is-in {
+  opacity: 1;
+}
+
+.hero-frame {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .hero-frame.is-in {
   opacity: 1;
   transform: none;
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .loader {
@@ -1577,13 +1587,15 @@ main {
 
   .hero-logo,
   .hero-shift,
+  .menu-intro,
   .tagline,
   .hours,
   .hero-actions,
   .card,
   .visit-card,
   .hero-frame,
-  .loader {
+  .loader,
+  [data-parallax] {
     opacity: 1;
     transform: none;
     filter: none;
