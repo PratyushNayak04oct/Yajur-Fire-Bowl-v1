@@ -40,7 +40,6 @@ export default function Loader() {
       <div className="loader-scene">
         <span className="loader-ring outer" />
         <span className="loader-ring inner" />
-        <span className="loader-glow" />
         <div className="loader-brand">
           <Image
             src="/logo.png"

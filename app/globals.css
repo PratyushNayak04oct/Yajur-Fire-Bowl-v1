@@ -292,7 +292,6 @@ main {
   object-position: center;
   border-radius: 50%;
   background: transparent !important;
-  box-shadow: 0 0 18px rgba(255, 90, 31, 0.4);
 }
 
 .brand span {
@@ -584,7 +583,6 @@ main {
   margin-inline: auto;
   object-fit: contain;
   background: transparent !important;
-  animation: glow 3.6s ease-in-out infinite;
 }
 
 [data-parallax] {
@@ -1203,16 +1201,6 @@ main {
   animation: spin 7s linear infinite reverse;
 }
 
-.loader-glow {
-  position: absolute;
-  inset: 18%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 90, 31, 0.28), transparent 70%);
-  filter: blur(16px);
-  animation: heat 1.8s ease-in-out infinite;
-  pointer-events: none;
-}
-
 .loader-brand {
   position: relative;
   z-index: 2;
@@ -1230,7 +1218,6 @@ main {
   height: auto !important;
   object-fit: contain;
   background: transparent !important;
-  animation: glow 2.2s ease-in-out infinite;
 }
 
 .loader-sheen {
@@ -1547,11 +1534,6 @@ main {
   to { opacity: 1; }
 }
 
-@keyframes glow {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 90, 31, 0.28)); }
-  50% { filter: drop-shadow(0 0 18px rgba(255, 90, 31, 0.5)); }
-}
-
 @keyframes sheen {
   0% { background-position: 0% 50%; }
   100% { background-position: 200% 50%; }
@@ -1641,8 +1623,7 @@ main {
   .loader-heat,
   .loader-ring,
   .loader-spark,
-  .loader-sheen,
-  .loader-glow {
+  .loader-sheen {
     display: none;
   }
 }
