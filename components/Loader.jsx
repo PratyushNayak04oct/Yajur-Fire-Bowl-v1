@@ -31,28 +31,25 @@ export default function Loader() {
   return (
     <div className={`loader${hiding ? " is-done" : ""}`} aria-hidden="true">
       <div className="loader-scene">
-        <div className="loader-steam" />
-        <div className="loader-steam s2" />
-        <div className="loader-steam s3" />
         <span className="food-mote chili a" />
-        <span className="food-mote momo b" />
         <span className="food-mote leaf c" />
         <span className="food-mote chili d" />
         <span className="food-mote spark e" />
-        <span className="food-mote momo f" />
         <span className="food-mote leaf g" />
         <span className="food-mote spark h" />
-        <div className="loader-glow" />
         <div className="loader-bowl">
           <span className="loader-flame f1" />
           <span className="loader-flame f2" />
           <span className="loader-flame f3" />
-          <span className="loader-ring" />
-          <span className="loader-ring delay" />
-          <Image src="/logo.png" alt="" width={168} height={168} priority />
+          <Image
+            src="/logo.png"
+            alt=""
+            width={560}
+            height={306}
+            priority
+            style={{ width: "100%", height: "auto" }}
+          />
         </div>
-        <span className="loader-wok" />
-        <span className="loader-coals" />
       </div>
       <p suppressHydrationWarning>{LINES[line]}</p>
       <div className="loader-bar" />

@@ -220,9 +220,10 @@ function Hero() {
             className="hero-logo"
             src="/logo.png"
             alt="Yajur Fire Bowl — Chinese, Tandoor and Momos"
-            width={560}
-            height={560}
+            width={1024}
+            height={558}
             priority
+            style={{ width: "min(86vw, 340px)", height: "auto" }}
           />
           <h1 className="sr-only">{site.name}</h1>
           <p className="tagline">

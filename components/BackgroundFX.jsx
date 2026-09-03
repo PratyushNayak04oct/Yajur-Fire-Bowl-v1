@@ -133,24 +133,17 @@ export default function BackgroundFX() {
     <div className="fx" aria-hidden="true">
       <div className="fx-par slow" ref={slowRef}>
         <div className="fx-heat" />
-        <div className="fx-orb fx-orb-a" />
-        <div className="fx-orb fx-orb-b" />
       </div>
       <div className="fx-par mid" ref={midRef}>
-        <div className="fx-orb fx-orb-c" />
-        <div className="fx-ring fx-ring-l" />
-        <div className="fx-ring fx-ring-r" />
         <span className="bg-steam one" />
         <span className="bg-steam two" />
         <span className="bg-steam three" />
       </div>
       <div className="fx-par food" ref={foodRef}>
         <span className="food-mote chili p1" />
-        <span className="food-mote momo p2" />
         <span className="food-mote leaf p3" />
         <span className="food-mote spark p4" />
         <span className="food-mote chili p5" />
-        <span className="food-mote momo p6" />
         <span className="food-mote leaf p7" />
         <span className="food-mote spark p8" />
       </div>
