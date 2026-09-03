@@ -191,7 +191,6 @@ export default function HomePage() {
             src={site.address.embed}
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
           />
         </div>
         <p>

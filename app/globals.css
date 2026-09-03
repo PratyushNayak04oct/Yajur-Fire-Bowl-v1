@@ -32,6 +32,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
@@ -39,7 +41,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
   padding-bottom: calc(var(--qa-h) + env(safe-area-inset-bottom));
 }
 
@@ -234,16 +237,22 @@ body.nav-open {
 
 .chrome,
 main,
-.foot,
 .quick-actions {
   position: relative;
   z-index: 2;
 }
 
+main {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 .chrome {
   position: sticky;
   top: 0;
-  z-index: 12;
+  z-index: 30;
+  isolation: isolate;
+  transform: translateZ(0);
   background: var(--glass-strong);
   backdrop-filter: blur(22px) saturate(1.45);
   -webkit-backdrop-filter: blur(22px) saturate(1.45);
@@ -541,11 +550,12 @@ main,
 }
 
 .hero-frame {
-  max-width: 720px;
+  max-width: min(720px, 100%);
   margin: 0 auto;
   text-align: center;
   padding: 1.4rem 0.9rem 1.5rem;
   position: relative;
+  overflow: hidden;
   border-radius: 22px;
   background: var(--glass);
   border: 1px solid var(--glass-border);
@@ -577,8 +587,7 @@ main,
 }
 
 .hero-shift {
-  transform: translate3d(calc(var(--mx, 0) * 10px), calc(var(--sy, 0) * -0.05px + var(--my, 0) * 8px), 0);
-  will-change: transform;
+  transform: none;
 }
 
 .sr-only {
@@ -684,15 +693,15 @@ main,
 }
 
 .menu {
-  max-width: 980px;
+  max-width: min(980px, 100%);
   margin: 0 auto;
   padding: 1rem 0.9rem 1.6rem;
+  overflow-x: clip;
 }
 
 .menu-intro {
   text-align: center;
   margin: 1rem 0 1.4rem;
-  transform: translate3d(0, calc(var(--sy, 0) * -0.03px), 0);
 }
 
 .empty-filter {
@@ -865,7 +874,9 @@ main,
 
 .momo-scroll {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden;
+  max-width: 100%;
+  overscroll-behavior-x: contain;
 }
 
 .momo-head,
@@ -939,17 +950,20 @@ main,
 }
 
 .visit {
-  padding: 0.4rem 0.9rem 1.4rem;
+  padding: 0.4rem 0.9rem 2rem;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .visit-card {
-  max-width: 720px;
+  max-width: min(720px, 100%);
   margin: 0 auto;
   text-align: center;
   padding: 1.6rem 1rem;
   border: 1px solid var(--glass-border);
   border-radius: 22px;
   position: relative;
+  overflow: hidden;
   background: var(--glass);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
@@ -1050,11 +1064,18 @@ main,
 }
 
 .foot {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 100%;
   text-align: center;
-  padding: 1.6rem 1rem 1.2rem;
+  margin-top: 0.35rem;
+  padding: 2rem 0.9rem 1.4rem;
   color: var(--muted);
   font-size: 0.82rem;
   border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--chrome-h) + 0.6rem);
 }
 
 .foot h2 {
@@ -1065,21 +1086,32 @@ main,
 }
 
 .map-frame {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  contain: paint;
+  transform: translateZ(0);
   width: min(920px, 100%);
-  margin: 0 auto 1.3rem;
+  margin: 0.4rem auto 1.3rem;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow), var(--glass-shine);
   aspect-ratio: 16 / 10;
-  min-height: 220px;
-  transform: translate3d(0, calc(var(--sy, 0) * -0.022px), 0);
+  min-height: 200px;
+  max-height: min(420px, 58vh);
 }
 
 .map-frame iframe {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
   width: 100%;
   height: 100%;
+  max-width: 100%;
   border: 0;
+  pointer-events: auto;
 }
 
 .card,
@@ -1090,15 +1122,10 @@ main,
 }
 
 .card.is-in,
-.visit-card.is-in {
-  opacity: 1;
-  transform: translate3d(0, calc(var(--sy, 0) * 0.014px), 0);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
+.visit-card.is-in,
 .hero-frame.is-in {
   opacity: 1;
-  transform: translate3d(calc(var(--mx, 0) * -8px), calc(var(--sy, 0) * 0.04px + var(--my, 0) * 6px), 0);
+  transform: none;
   transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1238,7 +1265,7 @@ main,
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10;
+  z-index: 20;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.45rem;
@@ -1311,6 +1338,16 @@ main,
 
   .loader-bowl {
     width: min(92vw, 300px);
+  }
+
+  .map-frame {
+    min-height: 180px;
+    max-height: min(260px, 42vh);
+    aspect-ratio: 4 / 3;
+  }
+
+  .foot {
+    padding: 1.4rem 0.75rem 1.2rem;
   }
 }
 
@@ -1448,16 +1485,23 @@ main,
   .hero-logo {
     width: min(52vw, 420px) !important;
   }
+
+  .foot {
+    padding: 2.2rem 1.4rem 2rem;
+  }
+
+  .map-frame {
+    max-height: min(460px, 52vh);
+  }
 }
 
 @media (hover: hover) and (min-width: 720px) {
   .dish:hover,
   .momo:hover {
-    transform: translateX(4px);
+    background: rgba(255, 90, 31, 0.1);
   }
 
   .contact:hover {
-    transform: translateY(-3px);
     border-color: var(--gold);
     box-shadow: 0 10px 30px rgba(255, 90, 31, 0.18);
   }
