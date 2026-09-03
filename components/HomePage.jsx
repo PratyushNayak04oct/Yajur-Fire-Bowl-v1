@@ -9,7 +9,6 @@ import { menu, menuNav, momoStyles } from "@/lib/menu";
 import { mapsUrl, site } from "@/lib/site";
 
 export default function HomePage() {
-  const [diet, setDiet] = useState("all");
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("soups");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -138,20 +137,6 @@ export default function HomePage() {
             <span />
             <span />
           </button>
-          <div className="diet" role="group" aria-label="Filter menu by diet">
-            {["all", "veg", "nv"].map((value) => (
-              <button
-                key={value}
-                className={`diet-btn${diet === value ? " is-active" : ""}`}
-                type="button"
-                onClick={() => setDiet(value)}
-              >
-                {value === "veg" && <i className="mark veg" aria-hidden="true" />}
-                {value === "nv" && <i className="mark nv" aria-hidden="true" />}
-                {value === "all" ? "All" : value === "veg" ? "Veg" : "Non-Veg"}
-              </button>
-            ))}
-          </div>
         </header>
 
         <nav className="chips" aria-label="Menu sections">
@@ -193,7 +178,7 @@ export default function HomePage() {
 
       <main>
         <Hero />
-        <MenuBoard diet={diet} />
+        <MenuBoard />
         <Visit />
       </main>
 
@@ -230,63 +215,65 @@ function Hero() {
         <span className="corner tr" />
         <span className="corner bl" />
         <span className="corner br" />
-        <Image
-          className="hero-logo"
-          src="/logo.png"
-          alt="Yajur Fire Bowl — Chinese, Tandoor and Momos"
-          width={560}
-          height={560}
-          priority
-        />
-        <h1 className="sr-only">{site.name}</h1>
-        <p className="tagline">
-          {site.tagline.map((item, index) => (
-            <span key={item}>
-              {index > 0 && <i />}
-              {item}
-            </span>
-          ))}
-        </p>
-        <p className="hours">
-          {site.hoursNote} · {site.hours}
-        </p>
-        <div className="hero-actions">
-          <a className="btn primary" href="#menu">
-            View Menu
-          </a>
-          <a className="btn ghost" href={`tel:${site.phone}`}>
-            Call {site.owner.split(" ")[0]}
-          </a>
-          <a className="btn ghost" href="#address">
-            Address
-          </a>
+        <div className="hero-shift">
+          <Image
+            className="hero-logo"
+            src="/logo.png"
+            alt="Yajur Fire Bowl — Chinese, Tandoor and Momos"
+            width={560}
+            height={560}
+            priority
+          />
+          <h1 className="sr-only">{site.name}</h1>
+          <p className="tagline">
+            {site.tagline.map((item, index) => (
+              <span key={item}>
+                {index > 0 && <i />}
+                {item}
+              </span>
+            ))}
+          </p>
+          <p className="hours">
+            {site.hoursNote} · {site.hours}
+          </p>
+          <div className="hero-actions">
+            <a className="btn primary" href="#menu">
+              View Menu
+            </a>
+            <a className="btn ghost" href={`tel:${site.phone}`}>
+              Call {site.owner.split(" ")[0]}
+            </a>
+            <a className="btn ghost" href="#address">
+              Address
+            </a>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function MenuBoard({ diet }) {
+function MenuBoard() {
   return (
     <section className="menu" id="menu">
       <header className="menu-intro">
         <p className="eyebrow">Our Menu</p>
         <h2>Flame, spice &amp; flavour</h2>
-        <p>Prices in INR. Veg and non-veg marked beside each dish.</p>
+        <p>Filter veg or non-veg inside each section. Prices in INR.</p>
       </header>
       {menu.map((section) => (
-        <SectionCard key={section.id} section={section} diet={diet} />
+        <SectionCard key={section.id} section={section} />
       ))}
     </section>
   );
 }
 
-function SectionCard({ section, diet }) {
+function SectionCard({ section }) {
+  const [diet, setDiet] = useState("all");
   const items = useMemo(
     () => section.items.filter((item) => diet === "all" || item.diet === diet),
     [section.items, diet]
   );
-  if (items.length === 0) return null;
 
   return (
     <article className="card" id={section.id} data-section>
@@ -298,15 +285,24 @@ function SectionCard({ section, diet }) {
           ))}
         </span>
       </h3>
+      <div className="section-diet" role="group" aria-label={`Filter ${section.title}`}>
+        {["all", "veg", "nv"].map((value) => (
+          <button
+            key={value}
+            className={`diet-btn${diet === value ? " is-active" : ""}`}
+            type="button"
+            onClick={() => setDiet(value)}
+          >
+            {value === "veg" && <i className="mark veg" aria-hidden="true" />}
+            {value === "nv" && <i className="mark nv" aria-hidden="true" />}
+            {value === "all" ? "All" : value === "veg" ? "Veg" : "Non-Veg"}
+          </button>
+        ))}
+      </div>
       {section.note && <p className="card-note">{section.note}</p>}
-      {section.layout === "split" && items.some((item) => item.pair) && (
-        <div className="split-head" aria-hidden="true">
-          <span />
-          <span>Half</span>
-          <span>Full</span>
-        </div>
-      )}
-      {section.layout === "momo" ? (
+      {items.length === 0 ? (
+        <p className="empty-filter">No dishes in this filter. Try All or the other diet.</p>
+      ) : section.layout === "momo" ? (
         <div className="momo-scroll">
           <div className="momo-head" aria-hidden="true">
             <span>Style</span>
@@ -316,16 +312,25 @@ function SectionCard({ section, diet }) {
           </div>
           <ul className="momos">
             {items.map((item) => (
-              <MomoRow key={item.name} item={item} />
+              <MomoRow key={`${diet}-${item.name}`} item={item} />
             ))}
           </ul>
         </div>
       ) : (
-        <ul className="dishes">
-          {items.map((item) => (
-            <DishRow key={item.name} item={item} split={section.layout === "split"} />
-          ))}
-        </ul>
+        <>
+          {section.layout === "split" && items.some((item) => item.pair) && (
+            <div className="split-head" aria-hidden="true">
+              <span />
+              <span>Half</span>
+              <span>Full</span>
+            </div>
+          )}
+          <ul className="dishes">
+            {items.map((item) => (
+              <DishRow key={`${diet}-${item.name}`} item={item} split={section.layout === "split"} />
+            ))}
+          </ul>
+        </>
       )}
     </article>
   );
