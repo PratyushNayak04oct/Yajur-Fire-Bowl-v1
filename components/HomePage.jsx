@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import BackgroundFX from "@/components/BackgroundFX";
+import Loader from "@/components/Loader";
 import QuickActions from "@/components/QuickActions";
-import { menu, menuNav } from "@/lib/menu";
+import { menu, menuNav, momoStyles } from "@/lib/menu";
 import { mapsUrl, site } from "@/lib/site";
 
 export default function HomePage() {
@@ -88,8 +89,26 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const cards = [...document.querySelectorAll(".card, .visit-card, .hero-frame")];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
+      <Loader />
       <BackgroundFX />
       <a className="skip" href="#menu">
         Skip to menu
@@ -178,7 +197,18 @@ export default function HomePage() {
         <Visit />
       </main>
 
-      <footer className="foot">
+      <footer className="foot" id="map">
+        <p className="eyebrow">Find us</p>
+        <h2>Yajur Fire Bowl on the map</h2>
+        <div className="map-frame">
+          <iframe
+            title="Yajur Fire Bowl location"
+            src={site.address.embed}
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
         <p>
           {site.name} · {site.tagline.join(" | ")}
         </p>
@@ -269,31 +299,34 @@ function SectionCard({ section, diet }) {
         </span>
       </h3>
       {section.note && <p className="card-note">{section.note}</p>}
-      {section.layout === "split" && (
+      {section.layout === "split" && items.some((item) => item.pair) && (
         <div className="split-head" aria-hidden="true">
           <span />
           <span>Half</span>
           <span>Full</span>
         </div>
       )}
-      {section.layout === "momo" && (
-        <div className="momo-head" aria-hidden="true">
-          <span>Style</span>
-          <span>Steam</span>
-          <span>Fried</span>
-          <span>Cheese</span>
-          <span>Tandoori</span>
+      {section.layout === "momo" ? (
+        <div className="momo-scroll">
+          <div className="momo-head" aria-hidden="true">
+            <span>Style</span>
+            {momoStyles.map((style) => (
+              <span key={style.key}>{style.label}</span>
+            ))}
+          </div>
+          <ul className="momos">
+            {items.map((item) => (
+              <MomoRow key={item.name} item={item} />
+            ))}
+          </ul>
         </div>
-      )}
-      <ul className={section.layout === "momo" ? "momos" : "dishes"}>
-        {items.map((item) =>
-          section.layout === "momo" ? (
-            <MomoRow key={item.name} item={item} />
-          ) : (
+      ) : (
+        <ul className="dishes">
+          {items.map((item) => (
             <DishRow key={item.name} item={item} split={section.layout === "split"} />
-          )
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </article>
   );
 }
@@ -327,12 +360,11 @@ function MomoRow({ item }) {
       <span className="name">
         <i className={`mark ${item.diet}`} /> {item.name}
       </span>
-      <span className={prices.steam ? undefined : "na"} data-label="Steam">
-        {prices.steam ?? "—"}
-      </span>
-      <span data-label="Fried">{prices.fried}</span>
-      <span data-label="Cheese">{prices.cheese}</span>
-      <span data-label="Tandoori">{prices.tandoori}</span>
+      {momoStyles.map((style) => (
+        <span key={style.key} data-label={style.label}>
+          {prices[style.key] ?? "—"}
+        </span>
+      ))}
     </li>
   );
 }
@@ -365,11 +397,13 @@ function Visit() {
         </div>
         <p className="visit-hours">{site.partyOrders}</p>
         <div className="contacts">
-          <a className="contact" href={`tel:${site.phone}`}>
-            <span>Call</span>
-            <strong>{site.owner}</strong>
-            <em>{site.phoneDisplay}</em>
-          </a>
+          {site.phones.map((phone) => (
+            <a className="contact" key={phone.tel} href={`tel:${phone.tel}`}>
+              <span>Call</span>
+              <strong>{site.owner}</strong>
+              <em>{phone.display}</em>
+            </a>
+          ))}
           <a className="contact" href={`mailto:${site.email}`}>
             <span>Email</span>
             <strong>Write to us</strong>

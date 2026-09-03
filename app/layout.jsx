@@ -44,10 +44,11 @@ export default function RootLayout({ children }) {
               "@type": "Restaurant",
               name: site.name,
               alternateName: site.hindiName,
-              telephone: site.phone,
+              telephone: site.phones.map((phone) => phone.tel),
               email: site.email,
               servesCuisine: site.tagline,
               openingHours: "Mo-Su 11:00-23:00",
+              url: site.address.mapsUrl,
             }),
           }}
         />

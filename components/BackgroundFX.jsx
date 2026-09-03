@@ -4,6 +4,26 @@ import { useEffect, useRef } from "react";
 
 export default function BackgroundFX() {
   const canvasRef = useRef(null);
+  const parRef = useRef(null);
+
+  useEffect(() => {
+    const layer = parRef.current;
+    if (!layer) return undefined;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        layer.style.transform = `translate3d(0, ${window.scrollY * 0.07}px, 0)`;
+        frame = 0;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -82,12 +102,14 @@ export default function BackgroundFX() {
 
   return (
     <div className="fx" aria-hidden="true">
-      <div className="fx-heat" />
-      <div className="fx-orb fx-orb-a" />
-      <div className="fx-orb fx-orb-b" />
-      <div className="fx-orb fx-orb-c" />
-      <div className="fx-ring fx-ring-l" />
-      <div className="fx-ring fx-ring-r" />
+      <div className="fx-par" ref={parRef}>
+        <div className="fx-heat" />
+        <div className="fx-orb fx-orb-a" />
+        <div className="fx-orb fx-orb-b" />
+        <div className="fx-orb fx-orb-c" />
+        <div className="fx-ring fx-ring-l" />
+        <div className="fx-ring fx-ring-r" />
+      </div>
       <canvas ref={canvasRef} className="fx-embers" />
       <div className="fx-grain" />
     </div>

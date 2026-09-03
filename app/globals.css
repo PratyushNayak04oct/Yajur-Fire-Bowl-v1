@@ -48,6 +48,12 @@ body.nav-open {
   overflow: hidden;
 }
 
+.fx-par {
+  position: absolute;
+  inset: -8%;
+  will-change: transform;
+}
+
 .fx-heat {
   position: absolute;
   inset: -10%;
@@ -734,13 +740,19 @@ main,
   display: none;
 }
 
+.momo-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .momo-head,
 .momo {
   display: grid;
-  grid-template-columns: minmax(5.6rem, 1.35fr) repeat(4, minmax(2.5rem, 1fr));
+  grid-template-columns: minmax(6.2rem, 1.2fr) repeat(5, minmax(3.1rem, 1fr));
   column-gap: 0.3rem;
   align-items: center;
   padding-inline: 0.75rem;
+  min-width: 560px;
 }
 
 .momo-head {
@@ -908,10 +920,119 @@ main,
 
 .foot {
   text-align: center;
-  padding: 1.2rem 1rem 1.2rem;
+  padding: 1.6rem 1rem 1.2rem;
   color: var(--muted);
   font-size: 0.82rem;
   border-top: 1px solid var(--line);
+}
+
+.foot h2 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  margin: 0.25rem 0 0.9rem;
+}
+
+.map-frame {
+  width: min(920px, 100%);
+  margin: 0 auto 1.3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  aspect-ratio: 16 / 10;
+  min-height: 220px;
+}
+
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.card,
+.visit-card,
+.hero-frame {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.card.is-in,
+.visit-card.is-in,
+.hero-frame.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  background: #0c0a08;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-glow {
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 90, 31, 0.28), transparent 68%);
+  animation: heat 1.4s ease-in-out infinite;
+}
+
+.loader-bowl {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  display: grid;
+  place-items: center;
+}
+
+.loader-bowl img {
+  width: 132px;
+  height: 132px;
+  object-fit: cover;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 28px rgba(255, 90, 31, 0.45);
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(232, 200, 114, 0.45);
+  border-top-color: var(--flame);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.loader-ring.delay {
+  inset: 10px;
+  animation-duration: 1.3s;
+  animation-direction: reverse;
+  border-color: rgba(255, 90, 31, 0.2);
+  border-bottom-color: var(--gold-2);
+}
+
+.loader p {
+  position: relative;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--gold-2);
 }
 
 .quick-actions {
@@ -1028,9 +1149,10 @@ main,
 
   .momo-head,
   .momo {
-    grid-template-columns: minmax(9.5rem, 1.4fr) repeat(4, minmax(3.2rem, 1fr));
-    column-gap: 0.45rem;
+    grid-template-columns: minmax(9rem, 1.3fr) repeat(5, minmax(3.2rem, 1fr));
+    column-gap: 0.4rem;
     padding-inline: 1rem;
+    min-width: 640px;
   }
 
   .momo-head {
@@ -1165,9 +1287,14 @@ main,
   .hero-logo,
   .tagline,
   .hours,
-  .hero-actions {
+  .hero-actions,
+  .card,
+  .visit-card,
+  .hero-frame,
+  .loader {
     opacity: 1;
     transform: none;
     filter: none;
+    visibility: visible;
   }
 }
