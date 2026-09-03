@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const LINES = ["Lighting the tandoor", "Tossing the wok", "Steaming the momos", "Plating your menu"];
+const LINES = ["Lighting the tandoor", "Heating the wok", "Plating your menu"];
 
 export default function Loader() {
   const [hiding, setHiding] = useState(false);
@@ -12,13 +12,13 @@ export default function Loader() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hideAt = reduce ? 200 : 3200;
-    const removeAt = reduce ? 360 : 3800;
+    const hideAt = reduce ? 200 : 2800;
+    const removeAt = reduce ? 400 : 3400;
     const hideTimer = window.setTimeout(() => setHiding(true), hideAt);
     const goneTimer = window.setTimeout(() => setGone(true), removeAt);
     const cycle = reduce
       ? undefined
-      : window.setInterval(() => setLine((n) => (n + 1) % LINES.length), 800);
+      : window.setInterval(() => setLine((n) => (n + 1) % LINES.length), 850);
     return () => {
       window.clearTimeout(hideTimer);
       window.clearTimeout(goneTimer);
@@ -30,25 +30,27 @@ export default function Loader() {
 
   return (
     <div className={`loader${hiding ? " is-done" : ""}`} aria-hidden="true">
+      <div className="loader-heat" />
+      <span className="loader-spark s1" />
+      <span className="loader-spark s2" />
+      <span className="loader-spark s3" />
+      <span className="loader-spark s4" />
+      <span className="loader-spark s5" />
+      <span className="loader-spark s6" />
       <div className="loader-scene">
-        <span className="food-mote chili a" />
-        <span className="food-mote leaf c" />
-        <span className="food-mote chili d" />
-        <span className="food-mote spark e" />
-        <span className="food-mote leaf g" />
-        <span className="food-mote spark h" />
-        <div className="loader-bowl">
-          <span className="loader-flame f1" />
-          <span className="loader-flame f2" />
-          <span className="loader-flame f3" />
+        <span className="loader-ring outer" />
+        <span className="loader-ring inner" />
+        <span className="loader-glow" />
+        <div className="loader-brand">
           <Image
             src="/logo.png"
             alt=""
-            width={560}
-            height={306}
+            width={1024}
+            height={1024}
             priority
             style={{ width: "100%", height: "auto" }}
           />
+          <span className="loader-sheen" />
         </div>
       </div>
       <p suppressHydrationWarning>{LINES[line]}</p>

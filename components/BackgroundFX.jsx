@@ -37,7 +37,7 @@ export default function BackgroundFX() {
         const rect = node.getBoundingClientRect();
         const center = rect.top - current + rect.height * 0.5;
         const dist = (center - mid) / window.innerHeight;
-        const shift = Math.max(-24, Math.min(24, dist * 64 * speed));
+        const shift = Math.max(-32, Math.min(32, dist * 88 * speed));
         node.style.setProperty("--py", `${shift.toFixed(2)}px`);
       });
       frame = 0;
@@ -109,10 +109,10 @@ export default function BackgroundFX() {
         s.a -= 0.0015;
         if (s.y < -12 || s.a <= 0) sparks[i] = spawn(true);
         ctx.beginPath();
-        ctx.fillStyle = `hsla(${s.hue}, 100%, 62%, ${s.a})`;
+        ctx.fillStyle = `hsla(${s.hue}, 100%, 62%, ${Math.max(0, s.a)})`;
         ctx.shadowColor = `hsla(${s.hue}, 100%, 55%, 0.75)`;
         ctx.shadowBlur = 8;
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, Math.max(0.2, s.r), 0, Math.PI * 2);
         ctx.fill();
       });
       raf = requestAnimationFrame(draw);

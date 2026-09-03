@@ -119,7 +119,7 @@ export default function HomePage() {
       >
         <header className="topbar">
           <a className="brand" href="/" onClick={reloadHome}>
-            <Image src="/logo.png" alt="" width={42} height={42} />
+            <Image src="/logo.png" alt="" width={1024} height={1024} />
             <span>
               <strong>Yajur</strong>
               Fire Bowl
@@ -183,8 +183,8 @@ export default function HomePage() {
       </main>
 
       <footer className="foot" id="map">
-        <p className="eyebrow">Find us</p>
-        <h2>Yajur Fire Bowl on the map</h2>
+        <p className="eyebrow" data-parallax="0.14">Find us</p>
+        <h2 data-parallax="0.1">Yajur Fire Bowl on the map</h2>
         <div className="map-frame">
           <iframe
             title="Yajur Fire Bowl location"
@@ -193,7 +193,7 @@ export default function HomePage() {
             referrerPolicy="strict-origin-when-cross-origin"
           />
         </div>
-        <p>
+        <p data-parallax="0.08">
           {site.name} · {site.tagline.join(" | ")}
         </p>
         <p>
@@ -214,18 +214,20 @@ function Hero() {
         <span className="corner tr" />
         <span className="corner bl" />
         <span className="corner br" />
-        <div className="hero-shift" data-parallax="0.42">
-          <Image
-            className="hero-logo"
-            src="/logo.png"
-            alt="Yajur Fire Bowl — Chinese, Tandoor and Momos"
-            width={1024}
-            height={558}
-            priority
-            style={{ width: "min(86vw, 340px)", height: "auto" }}
-          />
+        <div className="hero-shift">
+          <div data-parallax="0.4">
+            <Image
+              className="hero-logo"
+              src="/logo.png"
+              alt="Yajur Fire Bowl — Chinese, Tandoor and Momos"
+              width={1024}
+              height={1024}
+              priority
+              style={{ width: "min(70vw, 300px)", height: "auto" }}
+            />
+          </div>
           <h1 className="sr-only">{site.name}</h1>
-          <p className="tagline">
+          <p className="tagline" data-parallax="0.28">
             {site.tagline.map((item, index) => (
               <span key={item}>
                 {index > 0 && <i />}
@@ -233,10 +235,10 @@ function Hero() {
               </span>
             ))}
           </p>
-          <p className="hours">
+          <p className="hours" data-parallax="0.2">
             {site.hoursNote} · {site.hours}
           </p>
-          <div className="hero-actions">
+          <div className="hero-actions" data-parallax="0.12">
             <a className="btn primary" href="#menu">
               View Menu
             </a>
@@ -256,10 +258,10 @@ function Hero() {
 function MenuBoard() {
   return (
     <section className="menu" id="menu">
-      <header className="menu-intro" data-parallax="0.22">
+      <header className="menu-intro" data-parallax="0.26">
         <p className="eyebrow">Our Menu</p>
         <h2>Flame, spice &amp; flavour</h2>
-        <p>Filter veg or non-veg inside each section. Prices in INR.</p>
+        <p>Prices in INR. Veg and non-veg filters appear where a section has both.</p>
       </header>
       {menu.map((section) => (
         <SectionCard key={section.id} section={section} />
@@ -276,7 +278,7 @@ function SectionCard({ section }) {
   );
 
   return (
-    <article className="card" id={section.id} data-section data-parallax="0.14">
+    <article className="card" id={section.id} data-section data-parallax="0.16">
       <h3 className="card-title">
         {section.title}
         <span className="diet-pair">
@@ -285,20 +287,22 @@ function SectionCard({ section }) {
           ))}
         </span>
       </h3>
-      <div className="section-diet" role="group" aria-label={`Filter ${section.title}`}>
-        {["all", "veg", "nv"].map((value) => (
-          <button
-            key={value}
-            className={`diet-btn${diet === value ? " is-active" : ""}`}
-            type="button"
-            onClick={() => setDiet(value)}
-          >
-            {value === "veg" && <i className="mark veg" aria-hidden="true" />}
-            {value === "nv" && <i className="mark nv" aria-hidden="true" />}
-            {value === "all" ? "All" : value === "veg" ? "Veg" : "Non-Veg"}
-          </button>
-        ))}
-      </div>
+      {section.diets.length > 1 && (
+        <div className="section-diet" role="group" aria-label={`Filter ${section.title}`}>
+          {["all", "veg", "nv"].map((value) => (
+            <button
+              key={value}
+              className={`diet-btn${diet === value ? " is-active" : ""}`}
+              type="button"
+              onClick={() => setDiet(value)}
+            >
+              {value === "veg" && <i className="mark veg" aria-hidden="true" />}
+              {value === "nv" && <i className="mark nv" aria-hidden="true" />}
+              {value === "all" ? "All" : value === "veg" ? "Veg" : "Non-Veg"}
+            </button>
+          ))}
+        </div>
+      )}
       {section.note && <p className="card-note">{section.note}</p>}
       {items.length === 0 ? (
         <p className="empty-filter">No dishes in this filter. Try All or the other diet.</p>
@@ -377,7 +381,7 @@ function MomoRow({ item }) {
 function Visit() {
   return (
     <section className="visit" id="visit">
-      <div className="visit-card" id="address" data-section data-parallax="0.1">
+      <div className="visit-card" id="address" data-section data-parallax="0.12">
         <span className="corner tl" />
         <span className="corner tr" />
         <span className="corner bl" />
